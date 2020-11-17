@@ -1,0 +1,235 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+
+html {
+    font-size: 100%;
+}
+
+.container {
+    /* display: flex;
+    flex-direction: column; */
+    /* align-items: center;
+    justify-content: center; */
+    height: 100vh;
+    background-color: #edeeff;
+}
+
+.gamebox, .pointsbox {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center;
+    justify-content: center; */
+    height: 100%;
+    overflow: hidden;
+}
+
+.pointsbox__item {
+    font-family: 'Rubik', sans-serif;
+}
+
+.box {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.example {
+    max-width: 100%;
+    height: 200px;
+    /* margin: calc(100vh/6) 10px 50px 10px; */
+    line-height: 200px;
+}
+
+.btn {
+    cursor: pointer;
+    
+    border-radius: 8px;
+    font-family: 'Rubik', sans-serif;
+    
+}
+
+.box__btn {
+    position: relative;
+    bottom: 0;
+    height: 65px;
+    font-size: 42px;
+    color: #fff;
+    border: none;
+    width: 95%;
+    align-self: center;
+    outline: none;
+    flex-grow: 1;
+    /* max-height: 65px; */
+    background: rgb(133,16,200);
+    background: linear-gradient(90deg, rgba(133,16,200,1) 0%, rgba(16,23,200,1) 100%); 
+    -webkit-box-shadow: 2px 4px 3px 0px rgba(89, 90, 90, 0.63);
+    -moz-box-shadow: 2px 4px 3px 0px rgba(89, 90, 90, 0.63);
+    box-shadow: 2px 4px 3px 0px rgba(89, 90, 90, 0.63);
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* .box__btn:not(:first-child) {
+    margin-top: 25px;
+}
+
+.box__btn:last-child {
+    margin-bottom: 10px;
+} */
+
+.timer {
+    font-family: 'Rubik', sans-serif;
+    
+    
+    
+}
+
+.bar {
+    background-color: #e2e4ff;
+}
+
+.bar__timer {
+    position: absolute;
+    top: 0;
+    z-index: 5;
+    color: #2e0074;
+    font-size: 50px;
+}
+
+.bar__timerbar {
+    position: relative;
+    left: 0;
+    width: 100vw;
+    height: 60px;
+    top: 0;
+    background-color: #41cf3c;
+    text-align: center;
+    -webkit-box-shadow: 0px 7px 8px 0px rgba(178, 178, 178, 0.63);
+    -moz-box-shadow: 0px 7px 8px 0px rgba(178, 178, 178, 0.63);
+    box-shadow: 0px 7px 8px 0px rgba(178, 178, 178, 0.63);
+    
+
+}
+
+.bar__timer--grey {
+    background-color: #dadada;
+    z-index: 0;
+}
+
+/* .scale {
+    
+    transform: scaleX(0.1);
+} */
+
+.example__item {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 100px;
+    font-family: 'Rubik', sans-serif;
+    margin-right: 10px;
+    letter-spacing: 8px;
+    color: #353535;
+}
+
+.solved_number {
+    color: #41cf3c;
+}
+
+
+
+.box__btn--correct {
+    background-color: #11b811;
+}
+
+.box__btn--incorrect {
+    background-color: #cc1414;
+}
+
+.hide {
+    display: none !important;
+}
+
+@media screen and (min-width: 320px) and (max-width: 480px){
+    
+    html, body {
+        height: 100%;
+    }
+
+    .gamebox{
+        width: 100%;
+        height: 100%;
+        justify-content: space-between;
+    }
+
+    .pointsbox{
+        width: 100%;
+        height: 100%;
+        align-items: center;
+    }
+
+    .pointsbox__item {
+        margin-top: 35vh;
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    .box {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        /* height: 100%; */  
+        justify-content: space-between;
+    }
+
+    .bar, .example {
+        width: 100%;
+    }
+
+    .bar__timer {
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        top: 0;
+    }
+
+    .example {
+        /* margin: 20% 0 0 0; */
+        line-height: 200px;
+        text-align: center;
+        font-size: 5em;
+    }
+
+    .example__item {
+        width: 100%;
+        font-size: 4rem;
+    }
+
+    .box__btn/* :not(:last-child) */ {
+        margin-bottom: 5%;
+    }
+
+    .points__item {
+        font-size: 1.8rem;
+        letter-spacing: 0;
+        
+    }
+
+/*     .box__btn:first-child {
+        margin-top: 5%;
+    } */
+/*     
+    .box__btn:last-child {
+        margin-bottom: 10px;
+    } */
+
+    }
+
+@media (max-width: 600px) {
+    .box {
+        /* border: 2px solid #000000; */
+        min-width: 100%;
+        /* min-height: 100vh; */
+        text-align: center;
+    }
+}
