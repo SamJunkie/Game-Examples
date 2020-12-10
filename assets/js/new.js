@@ -29,7 +29,7 @@ class Example {
     randomNumbers(diff) {
         const numbers = [];
         for (let i = 0; i < diff; i++) {
-            numbers.push(Math.floor(Math.random() * 10) + 1);
+            numbers.push(Math.floor(Math.random() * 9) + 1);
         }
         return numbers;
     }
@@ -91,7 +91,7 @@ class Example {
         while (random.length < 3) {
             let match;
             currNum = number + (Math.floor(Math.random() * 5) - (Math.floor(Math.random() * 10) - 5));
-            (number == currNum) ? match = 1: match = 0;
+            (number == currNum) ? match = 1 : match = 0;
             //currNum *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
             for (let i = 0; i < random.length; i++) {
                 if (random[i] == currNum) {
@@ -150,31 +150,49 @@ function timeRemaining(sec) {
         h = Math.floor((sec * 1000) / (1000 * 60 * 60) % 24),
         m = Math.floor(((sec * 1000) / 1000 / 60) % 60),
         s = Math.floor((sec % 60));
+        /* doubleDots = ':'; */
 
-    timer.textContent = /* getZero(h) + `:` + */ getZero(m) + `:` + getZero(s);
+    timer.textContent = getZero(m) + `:` + getZero(s);
 
 }
 
 function setTimer(sec) {
     timeRemaining(sec);
-    let timerWidth = +(getComputedStyle(timebar).width).replace('px', '');
-    const piece = timerWidth / sec;
+    //let timerWidth = +(getComputedStyle(timebar).width).replace('px', '');
+    //const piece = timerWidth / sec;
     const timer = setInterval(updateTime, 1000);
+    animateTimerBar();
 
     function updateTime() {
         sec--;
         timeRemaining(sec);
-        timerWidth -= piece;
-        document.querySelector('.bar__timerbar').style.width = `${timerWidth}px`;
+        /* timerWidth -= piece;
+        document.querySelector('.bar__timerbar').style.width = `${timerWidth}px`; */
 
-        if (sec <= 0) {
-            document.querySelector('.bar__timerbar').style.width = `0px`;
+        if (sec < 0) {
             clearInterval(timer);
             gameOver();
         }
 
     }
+
+    function animateTimerBar() {
+        let timerWidth = +(getComputedStyle(timebar).width).replace('px', '');
+        const piece = timerWidth / (sec - 1) / 30; 
+        const timerAnimateTimerBarId = setInterval(() => {
+            if (parseInt(timebar.style.width) < 2) {
+                timebar.style.width = `0px`;
+                clearInterval(timerAnimateTimerBarId);
+                return;
+            }
+            timebar.style.width = `${timerWidth -= piece}px`;
+            
+        }, 1000/30);
+        
+    }
 }
+
+
 
 function getZero(num) {
     if (num >= 0 && num < 10) {
@@ -195,7 +213,7 @@ function countingPoints(solve) {
 }
 
 function outputPoints() {
-    let str = 'примеров';
+/*     let str = 'примеров';
     if (points < 10 || points > 20) {
         switch (points % 10) {
             case 1:
@@ -211,10 +229,10 @@ function outputPoints() {
                 str = 'примеров';
                 break;
         }
-    }
+    } */
 
 
-    pointsSpan.textContent = `Вы решили правильно ${points} ${str} \n из ${counterExamples}`;
+    pointsSpan.textContent = `${points} / ${counterExamples}`;
 }
 
     /* if (points < 0) {
@@ -251,7 +269,7 @@ function start() {
     }
     timebar.style = "";
         newExample();
-        setTimer(60);
+        setTimer(66);
 }
 
 btns.forEach(e => {
@@ -263,5 +281,5 @@ btns.forEach(e => {
 });
 
 start();
-})()
+})();
 

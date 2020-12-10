@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
 
 html {
     font-size: 100%;
@@ -85,14 +86,16 @@ html {
 }
 
 .bar {
-    background-color: #e2e4ff;
+    /* background-color: #e2e4ff; */
+    background-color: #e2e2f1;
 }
 
 .bar__timer {
     position: absolute;
     top: 0;
     z-index: 5;
-    color: #2e0074;
+    /* color: #2e0074; */
+    color: #09119b;
     font-size: 50px;
 }
 
@@ -181,16 +184,17 @@ html {
         /* height: 100%; */  
         justify-content: space-between;
     }
-
+    
     .bar, .example {
         width: 100%;
     }
 
     .bar__timer {
-        display: inline-block;
-        width: 100%;
-        text-align: center;
-        top: 0;
+        left: 0px;
+        right: 0px;
+        margin: auto;
+        width: 127px;
+        letter-spacing: 1px;
     }
 
     .example {
