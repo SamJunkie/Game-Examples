@@ -11,35 +11,44 @@
 
 <body>
     <div class="container">
-        <div class="gamebox">
-            <div class="bar">
-                <div class="timerbar bar__timerbar"></div>
-                <div class="timer bar__timer"></div>
+        <div class="menu-container">
+            <h1>Игра на время</h1>
+            <div class="options-game">
+                <button class="btn box__btn" data-time="5">5</button>
+                <button class="btn box__btn" data-time="60">60</button>
+                <button class="btn box__btn btn_select" data-time="90">90<!-- &infin; --></button>
             </div>
-            <div class="example">
-                <span class="item example__item"></span>
-
-            </div>
-            <div class="box">
-                <button class="btn box__btn" id=1></button>
-                <button class="btn box__btn" id=2></button>
-                <button class="btn box__btn" id=3></button>
-                <button class="btn box__btn" id=4></button>
-            </div>
+            <input class="nickname" type="text" placeholder="введи имя">
+            <button id="start" type="submit" class="btn start-btn">играть</button>
         </div>
 
-
-        <div class="pointsbox hide">
-            <div class="points pointsbox__item">
-                <span class="item box__item points__item"><span class="solved_number">0</span>
-                </span>
+        <div class="game-container hide">
+            <div class="gamebox">
+                <div class="bar">
+                    <div class="timerbar bar__timerbar"></div>
+                    <div class="timer bar__timer"></div>
+                </div>
+                <div class="example">
+                    <span class="item example__item"></span>
+                </div>
+                <div class="box">
+                    <button class="btn box__btn" id=1></button>
+                    <button class="btn box__btn" id=2></button>
+                    <button class="btn box__btn" id=3></button>
+                    <button class="btn box__btn" id=4></button>
+                </div>
+            </div>
+            <div class="pointsbox hide">
+                <div class="points pointsbox__item">
+                    <span class="item box__item points__item"><span class="solved_number">0</span>
+                    </span>
+                </div>
             </div>
         </div>
-
     </div>
 
     <!-- <script src="main.js"></script> -->
-    <script src="./assets/js/new.js"></script>
+    <script type="module" src="./assets/js/new.js"></script>
 </body>
 
 </html>

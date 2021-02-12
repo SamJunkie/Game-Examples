@@ -1,285 +1,179 @@
-(function(){
-    
-const btns = document.querySelectorAll(".box__btn");
+import {
+    Example
+} from "../js/components/Example.js";
+import {
+    Timer
+} from "../js/components/Timer.js";
+import {
+    Game
+} from "../js/components/Game.js";
+//CONST ELEMENTS
+
+//=========== Menu display ================
+const menuDisplay = document.querySelector('.menu-container');
+const menuBtns = menuDisplay.querySelectorAll('.btn');
+const nickname = document.querySelector('.nickname');
+
+//=========== Game display ================
 const timer = document.querySelector('.bar__timer');
 const boxExample = document.querySelector('.example__item');
 const pointsSpan = document.querySelector('.points__item');
+const gameDisplay = document.querySelector('.game-container');
 const gamebox = document.querySelector('.gamebox');
+const btnsAnswer = gamebox.querySelectorAll(".box__btn");
 const pointsbox = document.querySelector('.pointsbox');
 const timebar = document.querySelector('.bar__timerbar');
 
-//let nameObj = 0;
-let obj,
-    points = 0,
-    counterExamples = 0;
 
-class Example {
 
-    constructor(difficulty = 2) {
-        //this.name = name;
-        this.diff = difficulty;
-        this.numbers = this.randomNumbers(this.diff);
-        this.operators = this.randomOperators(this.diff);
-        this.example = this.createExample(this.numbers, this.operators, this.diff);
-        this.result = this.solver(this.operators, this.numbers);
-        this.anySolve = this.randomSolve(this.result);
-        this.arrSolve = this.createArrSolvers();
-    }
 
-    randomNumbers(diff) {
-        const numbers = [];
-        for (let i = 0; i < diff; i++) {
-            numbers.push(Math.floor(Math.random() * 9) + 1);
+(function () {
+    let gameTime;
+    menuBtns.forEach((e) => {
+        if (e.classList.contains('btn_select')) {
+            gameTime = e.getAttribute(['data-time']);
         }
-        return numbers;
-    }
+        e.addEventListener('click', () => {
 
-    randomOperators(diff) {
-        const operators = ["+", "-"];
-        const currOperators = [null];
-        for (let i = 1; i < diff; i++) {
-            currOperators[i] = operators[Math.floor(Math.random() * 2)];
-        }
-        return currOperators;
-    }
 
-    createExample(num, oper, diff) {
-        let example = "";
-        for (let i = 0; i < diff; i++) {
-            (oper.length <= i + 1) ? example += `${num[i]}`: example += `${num[i]}${oper[i + 1]}`;
-        }
-        return example;
-    }
+            if (e.hasAttribute(['data-time'])) {
+                gameTime = e.getAttribute(['data-time']);
+                console.log(gameTime);
+                menuBtns.forEach((btn) => btn.classList.remove('btn_select'));
+                e.classList.add('btn_select');
+            }
 
-    solver(oper, nums) {
+            if (e.classList.contains('start-btn')) {
+                if (nickname.value != '') {
+                    menuDisplay.classList.add('hide');
 
-        let res = nums.reduce((sum, current, index) => {
+                    startGame();
 
-            if (index < 1) {
-                sum += current;
-
-            } else {
-
-                switch (oper[index]) {
-                    case "*":
-                        sum *= current;
-                        break;
-
-                    case "+":
-                        sum += current;
-                        break;
-
-                    case "-":
-                        sum -= current;
-                        break;
-
-                    case ":":
-                        sum /= current;
-                        break;
+                } else {
+                    nickname.style.border = '2px red solid';
+                    nickname.focus();
                 }
+
             }
-            return sum;
-        }, 0);
-        return res;
 
-    }
-
-    randomSolve(number) {
-        let random = [],
-            currNum;
-
-        while (random.length < 3) {
-            let match;
-            currNum = number + (Math.floor(Math.random() * 5) - (Math.floor(Math.random() * 10) - 5));
-            (number == currNum) ? match = 1 : match = 0;
-            //currNum *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
-            for (let i = 0; i < random.length; i++) {
-                if (random[i] == currNum) {
-                    match = 1;
-                    break;
-                }
-            }
-            if (!match) {
-                random[random.length] = currNum;
-            }
-        }
-        return random;
-    }
-
-    createArrSolvers() {
-        let arrSolvers = [];
-        arrSolvers = arrSolvers.concat(this.result, this.anySolve);
-        for (let i = arrSolvers.length - 1; i > 0; i--) {
-            let j = Math.floor(Math.random() * (i + 1));
-            [arrSolvers[i], arrSolvers[j]] = [arrSolvers[j], arrSolvers[i]];
-        }
-        return arrSolvers;
-    }
-
-    fillElements() {
-        document.querySelector('.example__item').textContent = this.example;
-        btns.forEach((e, i) => {
-            e.textContent = this.arrSolve[i];
         });
-    }
-}
+    });
 
-function newExample() {
-    obj = new Example(changeDifficult());
-    obj.fillElements();
-    counterExamples++;
-}
+    console.log(btnsAnswer);
 
-function changeDifficult() {
-    if (points >= 5 && points < 9) {
-        return 3;
-    } else if (points >= 9 && points < 13) {
-        return 4;
-    } else if (points >= 13) {
-        return 5;
-    } 
-    return 2;
-}
+    async function startGame() {
+
+        if (!pointsbox.classList.contains('hide')) {
+            gamebox.classList.remove('hide');
+            pointsbox.classList.add('hide');
+        }
+        gameDisplay.classList.remove('hide');
+
+        let timerWidth = parseInt(getComputedStyle(timebar).width);
+
+        const newGame = new Game({
+            timeGame: gameTime
+        });
+        const example = newGame.startGame(Example, Timer);
+        setNumbersOfTimebarForAnimate();
+        newGame.renderSolutions(btnsAnswer, example[0].initExample().arraySolutions);
+        newGame.renderExample(boxExample, example[0].example);
 
 
 
-// TIMER
+        const btns = Array.from(btnsAnswer);
+        for (let btn of btns) {
 
-function timeRemaining(sec) {
-    let
-        h = Math.floor((sec * 1000) / (1000 * 60 * 60) % 24),
-        m = Math.floor(((sec * 1000) / 1000 / 60) % 60),
-        s = Math.floor((sec % 60));
-        /* doubleDots = ':'; */
+            btn.addEventListener('click', (e) => {
+                console.log(btns.indexOf(e.target));
+                console.log('POINT:', newGame.checkSolutions(btns.indexOf(e.target), example[0]));
+                newExample();
+            });
+        }
 
-    timer.textContent = getZero(m) + `:` + getZero(s);
 
-}
 
-function setTimer(sec) {
-    timeRemaining(sec);
-    //let timerWidth = +(getComputedStyle(timebar).width).replace('px', '');
-    //const piece = timerWidth / sec;
-    const timer = setInterval(updateTime, 1000);
-    animateTimerBar();
+        function newExample() {
+            let difficult = 2;
 
-    function updateTime() {
-        sec--;
-        timeRemaining(sec);
-        /* timerWidth -= piece;
-        document.querySelector('.bar__timerbar').style.width = `${timerWidth}px`; */
+            if (newGame._points >= 5 && newGame._points < 9) {
+               difficult = 3;
+            } else if (newGame._points >= 9 && newGame._points < 13) {
+                difficult = 4;
+            } else if (newGame._points >= 13) {
+               difficult = 5;
+            }
 
-        if (sec < 0) {
-            clearInterval(timer);
+            example[0] = new Example(difficult);
+            example[0].initExample();
+            newGame.renderSolutions(btnsAnswer, example[0].arraySolutions);
+            newGame.renderExample(boxExample, example[0].example);
+            newGame.countingNumberExamples();
+        }
+
+
+
+        let end = await example[1].startAndTimerOperations();
+        if (end) {
             gameOver();
         }
 
-    }
-
-    function animateTimerBar() {
-        let timerWidth = +(getComputedStyle(timebar).width).replace('px', '');
-        const piece = timerWidth / (sec - 1) / 30; 
-        const timerAnimateTimerBarId = setInterval(() => {
-            if (parseInt(timebar.style.width) < 2) {
-                timebar.style.width = `0px`;
-                clearInterval(timerAnimateTimerBarId);
-                return;
-            }
-            timebar.style.width = `${timerWidth -= piece}px`;
+        function setNumbersOfTimebarForAnimate() {
             
-        }, 1000/30);
-        
-    }
-}
+            const piece = timerWidth / (example[1]._sec) / 60;
+            const countOfPieces = 60 * piece * example[1]._allTime;
+                  
+            requestAnimationFrame(animateTimerBar);
 
+            function animateTimerBar() {
+                let lastCountOfPieces = countOfPieces - (example[1]._allTime - example[1]._sec) * piece * 60;
+                /* console.log(example[1]._allTime); */
+                if (Math.floor(parseInt(timebar.style.width)) < 1) {
+                    timebar.classList.remove('bar__timerbar_low-time');
+                    return;
+                }
 
+                if (lastCountOfPieces < timerWidth) { // если анимация была остановлена, присвоим нужную длину для анимированного таймера
+                    timerWidth = lastCountOfPieces;
+                } else {
+                    timerWidth -= piece;
+                }
 
-function getZero(num) {
-    if (num >= 0 && num < 10) {
-        return `0${num}`;
-    }
-    return num;
-}
+                if (example[1]._sec == 3) {
+                    timebar.classList.add('bar__timerbar_low-time');
+                }
 
+                timebar.style.width = `${timerWidth}px`;
 
-
-// END GAME
-
-function countingPoints(solve) {
-    
-    if (solve) {
-        points++;
-    }
-}
-
-function outputPoints() {
-/*     let str = 'примеров';
-    if (points < 10 || points > 20) {
-        switch (points % 10) {
-            case 1:
-                str = 'пример';
-                break;
-    
-            case 2:
-            case 3:
-            case 4:
-                str = 'примера';
-                break;
-            default:
-                str = 'примеров';
-                break;
+                requestAnimationFrame(animateTimerBar);
+            }
         }
-    } */
 
 
-    pointsSpan.textContent = `${points} / ${counterExamples}`;
-}
+        function gameOver() {
+            /* saveResult(); */
+            gamebox.classList.add('hide');
+            pointsbox.classList.remove('hide');
+            outputPoints();
+            newGame.endGame();
+            clearGameNumbers();
+            setTimeout(startGame, 4000);
+        }
 
-    /* if (points < 0) {
-        points = 0;
-    } */
 
-    
 
-function gameOver() {
-    saveResult();
-    gamebox.classList.add('hide');
-    pointsbox.classList.remove('hide');
-    outputPoints();
-    points = 0;
-    counterExamples = 0;
-    setTimeout(start, 4000);
-}
+        function outputPoints() {
+            pointsSpan.textContent = `${newGame._points} / ${newGame._countExamples}`;
+        }
 
-function saveResult() {
-    if (points > +(localStorage.getItem('Best')) || !(localStorage.getItem('Best'))) {
-        localStorage.setItem('Best', points);
+        function clearGameNumbers() {
+            timebar.style = '';
+            timebar.classList.remove('bar__timerbar_low-time');
+        }
     }
-    
-}
 
-function checkCorrectSolve(e) {
-    countingPoints(+(e.textContent) == obj.result);
-}
-
-function start() {
-    if (!pointsbox.classList.contains('hide')) {
-        pointsbox.classList.add('hide');
-        gamebox.classList.remove('hide');
-    }
-    timebar.style = "";
-        newExample();
-        setTimer(66);
-}
-
-btns.forEach(e => {
-    e.addEventListener('click', () => {
-        checkCorrectSolve(e);
-        newExample();
-
-    });
-});
-
-start();
+    // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+    let vh = window.innerHeight * 0.01;
+    // Then we set the value in the --vh custom property to the root of the document
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
 })();
-
